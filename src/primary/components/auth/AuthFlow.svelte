@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { sineIn } from 'svelte/easing';
 	import useRecipeApi from '../../context/useRecipeApi';
 	import { token } from '../../stores/token';
 
