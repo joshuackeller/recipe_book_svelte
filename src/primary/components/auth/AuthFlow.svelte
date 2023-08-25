@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { sineIn } from 'svelte/easing';
+	import useRecipeApi from '../../context/useRecipeApi';
 	import { token } from '../../stores/token';
 
 	enum AuthFlow {
@@ -16,6 +18,20 @@
 			}
 		}
 	}
+
+	let email: string = '';
+	let password: string = '';
+
+	const api = useRecipeApi();
+	const signIn = async () => {
+		const { data: response } = await api.post('/auth/password/sign_in', {
+			email,
+			password
+		});
+		if (!!response.token) {
+			token.set(response.token);
+		}
+	};
 </script>
 
 <div>
@@ -29,38 +45,9 @@
 							token.set('value');
 						}}>sign in</button
 					>
-					<!-- <TextInput
-          inputClass="w-full"
-          name="name"
-          label="Name"
-          type="text"
-          value={name}
-          setValue={setName}
-        />
-        <TextInput
-          inputClass="w-full"
-          name="email"
-          label="Email"
-          type="email"
-          value={email}
-          setValue={setEmail}
-        />
-        <TextInput
-          inputClass="w-full"
-          name="password"
-          label="Password"
-          type="password"
-          value={password}
-          setValue={setPassword}
-        />
-        <Button
-          isLoading={creatingAccount}
-          disabled={creatingAccount}
-          class=""
-          type="submit"
-        >
-          Create Account
-        </Button> -->
+					<input bind:value={email} />
+					<input bind:value={password} />
+					<button on:click={signIn}>Sign In</button>
 				</form>
 				<div class="flex justify-center">
 					<a
