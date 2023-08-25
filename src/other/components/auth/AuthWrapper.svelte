@@ -2,12 +2,14 @@
 	import { token } from '../../stores/token';
 	import Loader from '../base/Loader.svelte';
 	import AuthFlow from './AuthFlow.svelte';
+
+	$: tokenValue = $token;
 </script>
 
 <div>
-	{#if !$token}
+	{#if !tokenValue}
 		<Loader />
-	{:else if !!$token && $token != 'undefined'}
+	{:else if !!tokenValue && tokenValue != 'undefined' && tokenValue != 'null'}
 		<slot />
 	{:else}
 		<AuthFlow />
