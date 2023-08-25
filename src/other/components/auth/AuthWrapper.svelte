@@ -1,21 +1,24 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { token } from '../../stores/token';
 	import Loader from '../base/Loader.svelte';
 	import AuthFlow from './AuthFlow.svelte';
 
-	let tokenValue: string;
+	let isLoading: boolean = true;
+	let tokenValue: string | null | undefined;
 
-	token.subscribe((value) => {
-		if (!!value) tokenValue = value;
+	onMount(() => {
+		tokenValue = $token;
+		isLoading = false;
 	});
 </script>
 
 <div>
-	{#if !tokenValue}
+	{#if isLoading}
 		<Loader />
-	{:else if !!tokenValue && tokenValue != 'undefined' && tokenValue != 'null'}
-		<slot />
-	{:else}
+	{:else if !$token}
 		<AuthFlow />
+	{:else if !!$token && $token !== 'undefined' && $token !== 'null' && $token !== null && $token !== undefined}
+		<slot />
 	{/if}
 </div>

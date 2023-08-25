@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { token } from '../other/stores/token';
+
 	let myNumberVar = 4;
 
 	const increment = () => {
@@ -14,3 +16,8 @@
 	<h1>{myNumberVar}</h1>
 	<button on:click={increment}>+</button>
 </div>
+<button
+	on:click={() => {
+		token.set(undefined);
+	}}>sign out</button
+>

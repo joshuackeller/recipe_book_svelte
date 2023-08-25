@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { token } from '../../stores/token';
 
 	enum AuthFlow {
 		sign_in = 'sign_in',
@@ -23,6 +24,11 @@
 			<div class="p-5 w-full max-w-sm border-2 border-black rounded-xl">
 				<form class="space-y-2">
 					<h2 class="text-center mb-2">Sign In</h2>
+					<button
+						on:click={() => {
+							token.set('value');
+						}}>sign in</button
+					>
 					<!-- <TextInput
           inputClass="w-full"
           name="name"

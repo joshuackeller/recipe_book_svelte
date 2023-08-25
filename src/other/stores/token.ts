@@ -8,7 +8,7 @@ export const token = writable<string | null | undefined>(browser ? localStorage.
 
 // Anytime the store changes, update the local storage value.
 token.subscribe((value) => {
-    if(browser) {
+    if(browser && value !== null && value !== "null" && value !== undefined && value !== "undefined" && value !== "") {
         return localStorage.token = value
     }
 })
