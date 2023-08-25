@@ -3,7 +3,11 @@
 	import Loader from '../base/Loader.svelte';
 	import AuthFlow from './AuthFlow.svelte';
 
-	$: tokenValue = $token;
+	let tokenValue: string;
+
+	token.subscribe((value) => {
+		if (!!value) tokenValue = value;
+	});
 </script>
 
 <div>
