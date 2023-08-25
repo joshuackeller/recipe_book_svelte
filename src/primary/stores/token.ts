@@ -8,12 +8,11 @@ export const token = writable<string | null | undefined>(browser ? localStorage.
 
 // Anytime the store changes, update the local storage value.
 token.subscribe((value) => {
-    if(browser && value !== "null" && value !== "undefined" && value !== "") {
-        return localStorage.token = value
+    if(browser) {
+        if(value === null || value === "null" || value === undefined || value === "undefined") {
+            localStorage.removeItem("token")
+        } else {
+            return localStorage.token = value
+        }
     }
 })
-
-
-export const signOut = () => {
-    token.set(undefined)
-}
