@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { token } from '../other/stores/token';
+	import { signOut, token } from '../primary/stores/token';
 
 	let myNumberVar = 4;
 
@@ -18,6 +18,6 @@
 </div>
 <button
 	on:click={() => {
-		token.set(undefined);
+		signOut();
 	}}>sign out</button
 >

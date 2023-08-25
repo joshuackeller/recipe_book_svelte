@@ -12,3 +12,8 @@ token.subscribe((value) => {
         return localStorage.token = value
     }
 })
+
+
+export const signOut = () => {
+    token.set(undefined)
+}
