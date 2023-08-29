@@ -1,7 +1,6 @@
 import { get } from 'svelte/store';
 import type { Recipe } from '../../interfaces';
 import useRecipeApi from '../../useRecipeApi';
-
 import { createQuery } from '@tanstack/svelte-query';
 import { token } from '../../../stores/token';
 
@@ -10,11 +9,11 @@ interface GetRecipesProps {
 	tagIds?: number[];
 }
 
-export const GetRecipes = async ({ search, tagIds }: GetRecipesProps) => {
+export const GetRecipes = async ({ search, tagIds }: GetRecipesProps): Promise<Recipe[]> => {
 	const api = useRecipeApi();
 	const { data } = await api.get('/recipes', {
 		params: {
-			search,
+			search: search ? search : undefined,
 			tagIds
 		}
 	});
@@ -25,7 +24,10 @@ export const KEY = 'RECIPES';
 
 const useGetRecipes = (search?: string, tagIds?: number[]) => {
 	const tokenValue = get(token);
-	return createQuery<Recipe[]>([KEY, search, tagIds], () => GetRecipes({ search, tagIds }), {
+
+	return createQuery<Recipe[]>({
+		queryKey: [KEY, search, tagIds],
+		queryFn: () => GetRecipes({ search, tagIds }),
 		enabled: !!tokenValue
 	});
 };

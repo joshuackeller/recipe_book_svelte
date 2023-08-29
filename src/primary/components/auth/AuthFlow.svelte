@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import useRecipeApi from '../../context/useRecipeApi';
+	import useCreateAccount from '../../context/mutations/auth/useCreateAccount';
+	import useSignIn from '../../context/mutations/auth/useSignIn';
 	import { token } from '../../stores/token';
+	import Button from '../base/Button.svelte';
+	import TextInput from '../fields/TextInput.svelte';
+	import ErrorMessage from '../base/ErrorMessage.svelte';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	enum AuthFlow {
 		sign_in = 'sign_in',
@@ -20,16 +26,34 @@
 
 	let email: string = '';
 	let password: string = '';
+	let name: string = '';
 
-	const api = useRecipeApi();
-	const signIn = async () => {
-		const { data: response } = await api.post('/auth/password/sign_in', {
-			email,
-			password
-		});
-		if (!!response.token) {
-			token.set(response.token);
-		}
+	const signIn = useSignIn();
+	const handleSignIn = async () => {
+		await $signIn.mutateAsync(
+			{ email, password },
+			{
+				onSuccess: (response) => {
+					if (!!response?.token) {
+						token.set(response.token);
+					}
+				}
+			}
+		);
+	};
+
+	const createAccount = useCreateAccount();
+	const handleCreateAccount = async () => {
+		await $createAccount.mutateAsync(
+			{ email, password, name },
+			{
+				onSuccess: (response) => {
+					if (!!response?.token) {
+						token.set(response.token);
+					}
+				}
+			}
+		);
 	};
 </script>
 
@@ -37,16 +61,13 @@
 	{#if authFlow === AuthFlow.sign_in}
 		<div class="flex justify-center py-20">
 			<div class="p-5 w-full max-w-sm border-2 border-black rounded-xl">
-				<form class="space-y-2">
+				<form class="space-y-2" on:submit|preventDefault={handleSignIn}>
 					<h2 class="text-center mb-2">Sign In</h2>
-					<button
-						on:click={() => {
-							token.set('value');
-						}}>sign in</button
-					>
-					<input bind:value={email} />
-					<input bind:value={password} />
-					<button on:click={signIn}>Sign In</button>
+					<div>
+						<TextInput bind:value={email} name="email" type="email" label="Email" />
+						<TextInput bind:value={password} type="password" name="password" label="Password" />
+					</div>
+					<Button isLoading={$signIn.isLoading} text="Sign In" type="submit" classes="w-full" />
 				</form>
 				<div class="flex justify-center">
 					<a
@@ -58,49 +79,31 @@
 		</div>
 	{:else}
 		<div class="flex justify-center py-20">
-			<div class="p-5 w-full max-w-sm border-2 border-black rounded-xl">
-				<form class="space-y-2">
-					<h2 class="text-center mb-2">Create Account</h2>
-					<!-- <TextInput
-              inputClass="w-full"
-              name="name"
-              label="Name"
-              type="text"
-              value={name}
-              setValue={setName}
-            />
-            <TextInput
-              inputClass="w-full"
-              name="email"
-              label="Email"
-              type="email"
-              value={email}
-              setValue={setEmail}
-            />
-            <TextInput
-              inputClass="w-full"
-              name="password"
-              label="Password"
-              type="password"
-              value={password}
-              setValue={setPassword}
-            />
-            <Button
-              isLoading={creatingAccount}
-              disabled={creatingAccount}
-              class=""
-              type="submit"
-            >
-              Create Account
-            </Button> -->
-				</form>
-				<div class="flex justify-center">
-					<a
-						href={`${$page.url.pathname}?authFlow=sign_in`}
-						class="pt-4 pb-1 text-center text-xs cursor-pointer"
-						>or Sign In
-					</a>
+			<div class="w-full max-w-sm">
+				<div class="p-5 border-2 border-black rounded-xl">
+					<form class="space-y-2" on:submit|preventDefault={handleCreateAccount}>
+						<h2 class="text-center mb-2">Create Account</h2>
+						<div>
+							<TextInput bind:value={name} name="name" type="text" label="Name" />
+							<TextInput bind:value={email} name="email" type="email" label="Email" />
+							<TextInput bind:value={password} type="password" name="password" label="Password" />
+						</div>
+						<Button
+							isLoading={$createAccount.isLoading}
+							text="Create Account"
+							type="submit"
+							classes="w-full"
+						/>
+					</form>
+					<div class="flex justify-center">
+						<a
+							href={`${$page.url.pathname}?authFlow=sign_in`}
+							class="pt-4 pb-1 text-center text-xs cursor-pointer"
+							>or Sign In
+						</a>
+					</div>
 				</div>
+				<ErrorMessage error={$createAccount.error} />
 			</div>
 		</div>
 	{/if}

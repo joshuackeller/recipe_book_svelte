@@ -3,13 +3,18 @@
 	import { token } from '../../stores/token';
 	import Loader from '../base/Loader.svelte';
 	import AuthFlow from './AuthFlow.svelte';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	let isLoading: boolean = true;
-	let tokenValue: string | null | undefined;
 
 	onMount(() => {
-		tokenValue = $token;
 		isLoading = false;
+
+		const checkAuthFlowParam = $page.url.searchParams.get('authFlow');
+		if (!!$token && !!checkAuthFlowParam) {
+			goto(`${$page.url.pathname}`);
+		}
 	});
 </script>
 
