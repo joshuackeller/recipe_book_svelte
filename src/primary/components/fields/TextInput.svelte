@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
-	export let value: string | number;
+	export let value: string | number | undefined = undefined;
 	export let name: string;
 	export let label: string | undefined = undefined;
 	export let type: HTMLInputTypeAttribute = 'text';
 	export let placeholder: string | undefined = undefined;
+	export let onInput: ((e: any) => void) | undefined = undefined;
 
 	const inputAttributes = { type };
 </script>
@@ -16,6 +17,7 @@
 	<input
 		{name}
 		bind:value
+		on:input={onInput}
 		{...inputAttributes}
 		{placeholder}
 		class="w-full rounded-lg border-2 border-black p-1"
