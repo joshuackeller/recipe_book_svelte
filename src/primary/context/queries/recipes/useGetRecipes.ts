@@ -28,7 +28,8 @@ const useGetRecipes = (search?: string, tagIds?: number[]) => {
 	return createQuery<Recipe[]>({
 		queryKey: [KEY, search, tagIds],
 		queryFn: () => GetRecipes({ search, tagIds }),
-		enabled: !!tokenValue
+		enabled: !!tokenValue,
+		keepPreviousData: true
 	});
 };
 

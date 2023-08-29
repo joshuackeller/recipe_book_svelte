@@ -12,12 +12,12 @@
 </script>
 
 <div>
+	<TextInput bind:value={search} name="search" placeholder="Find a recipe..." />
 	{#if $recipes.isLoading}
-		<Loader />
+		<Loader classes="my-10" />
 	{:else if $recipes.isError}
 		<ErrorMessage error={$recipes.error} />
 	{:else if $recipes.isSuccess}
-		<TextInput bind:value={search} name="search" placeholder="Find a recipe..." />
 		<div class="py-5 flex flex-wrap gap-5">
 			<a
 				href="/new"

@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let className = '';
+	export let classes = '';
 </script>
 
-<div class={`h-24 w-24 rounded-full bg-black animate-pulse mx-auto ${className}`} />
+<div class={`h-24 w-24 rounded-full bg-black animate-pulse mx-auto ${classes}`} />
