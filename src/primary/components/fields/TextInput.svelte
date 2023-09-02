@@ -1,11 +1,14 @@
 <script lang="ts">
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
+	import clsx from '../../utilities/clsx';
 	export let value: string | number | undefined = undefined;
 	export let name: string;
 	export let label: string | undefined = undefined;
 	export let type: HTMLInputTypeAttribute = 'text';
 	export let placeholder: string | undefined = undefined;
 	export let onInput: ((e: any) => void) | undefined = undefined;
+	export let classes: string = '';
+	export let onKeyDown: ((e: any) => void) | undefined = undefined;
 
 	const inputAttributes = { type };
 </script>
@@ -20,6 +23,7 @@
 		on:input={onInput}
 		{...inputAttributes}
 		{placeholder}
-		class="w-full rounded-lg border-2 border-black p-1"
+		class={clsx('w-full rounded-lg border-2 border-black p-1', classes)}
+		on:keydown={onKeyDown}
 	/>
 </div>

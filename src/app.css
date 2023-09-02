@@ -9,48 +9,48 @@
 }
 
 h1 {
-  @apply text-4xl font-bold;
+	@apply text-4xl font-bold;
 }
 h2 {
-  @apply text-3xl font-bold;
+	@apply text-3xl font-bold;
 }
 h3 {
-  @apply text-xl font-bold;
+	@apply text-xl font-bold;
 }
 h4 {
-  @apply text-lg font-bold;
+	@apply text-lg font-bold;
 }
 
 .tiptap-button {
-  @apply px-2 py-0.5 border rounded-xl border-gray-600 mx-0.5;
+	@apply px-2 py-0.5 border rounded-xl border-gray-600 mx-0.5;
 }
 .is-active {
-  @apply font-bold border-2;
+	@apply font-bold border-2;
 }
 
 /* Basic editor styles */
 .ProseMirror {
-  /* > * + * {
+	/* > * + * {
     margin-top: 0.75em;
   } */
-  outline: none;
+	outline: none;
 }
 .ProseMirror:focus {
-  outline: none;
+	outline: none;
 }
 
 .ProseMirror ul {
-  list-style-type: disc;
-  margin-left: 20px;
+	list-style-type: disc;
+	margin-left: 20px;
 }
 
 .ProseMirror ol {
-  list-style-type: decimal;
-  margin-left: 20px;
+	list-style-type: decimal;
+	margin-left: 20px;
 }
 
 .ProseMirror h1,
 h2,
 h3 {
-  margin: 15px 0px 5px 0px;
+	margin: 15px 0px 5px 0px;
 }
