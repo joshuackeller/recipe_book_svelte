@@ -6,6 +6,7 @@
 	import TextStyle from '@tiptap/extension-text-style';
 	import ListItem from '@tiptap/extension-list-item';
 	import TipTapMenu from './TipTapMenu.svelte';
+	import { HardBreak } from '@tiptap/extension-hard-break';
 
 	export let value: string = '';
 	let element: any;
@@ -19,7 +20,19 @@
 				// @ts-ignore
 				TextStyle.configure({ types: [ListItem.name] }),
 				TextStyle,
-				StarterKit
+				StarterKit,
+				HardBreak.extend({
+					addKeyboardShortcuts() {
+						return {
+							Enter: () => {
+								if (this.editor.isActive('orderedList') || this.editor.isActive('bulletList')) {
+									return this.editor.chain().createParagraphNear().run();
+								}
+								return this.editor.commands.setHardBreak();
+							}
+						};
+					}
+				})
 			],
 			content: value,
 			onUpdate: ({ editor }) => {

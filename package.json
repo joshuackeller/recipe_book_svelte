@@ -29,6 +29,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@tanstack/svelte-query": "^4.33.0",
 		"@tanstack/svelte-query-devtools": "^5.0.0-alpha.29",
 		"@tiptap/core": "^2.1.7",

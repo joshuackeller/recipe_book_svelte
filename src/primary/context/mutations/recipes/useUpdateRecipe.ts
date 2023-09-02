@@ -1,32 +1,28 @@
-import { createMutation } from '@tanstack/svelte-query';
+import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 import useRecipeApi from '../../useRecipeApi.js';
 import type { Recipe } from '../../interfaces.js';
-import { goto } from '$app/navigation';
+import { KEY as RECIPES } from '../../queries/recipes/useGetRecipes.js';
 
 interface UpdateRecipeProps {
 	id: string;
 	name: string;
 	html: string;
-	tags: {
-		id?: number;
-		name: string;
-	}[];
 }
 
-const UpdateRecipe = async ({ id, name, html, tags }: UpdateRecipeProps): Promise<Recipe> => {
+const UpdateRecipe = async ({ id, name, html }: UpdateRecipeProps): Promise<Recipe> => {
 	const api = useRecipeApi();
 	const { data } = await api.put(`/recipes/${id}`, {
 		name,
-		html,
-		tags
+		html
 	});
 	return data;
 };
 
 const useUpdateRecipe = () => {
+	const queryClient = useQueryClient();
 	return createMutation(UpdateRecipe, {
-		onSuccess: (response: Recipe) => {
-			goto(`/recipes/${response.id}`);
+		onSuccess: () => {
+			queryClient.invalidateQueries([RECIPES]);
 		}
 	});
 };

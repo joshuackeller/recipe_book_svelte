@@ -400,6 +400,11 @@
   dependencies:
     type-fest "^2.19.0"
 
+"@rgossiaux/svelte-headlessui@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@rgossiaux/svelte-headlessui/-/svelte-headlessui-2.0.0.tgz#397615a2ea39a44d601d4290a6efd9495b3b112d"
+  integrity sha512-ksh245HqMM8yqkzd/OyAK2FCHZYOSA3ldLIHab7C9S60FmifqT24JFVgi8tZpsDEMk3plbfQvfah93n5IEi8sg==
+
 "@solid-primitives/event-listener@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@solid-primitives/event-listener/-/event-listener-2.3.0.tgz#2e962e7e39ab47a8aed138b73f75f6d8dc9a558b"

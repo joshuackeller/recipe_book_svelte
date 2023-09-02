@@ -14,7 +14,7 @@ export const GetRecipes = async ({ search, tagIds }: GetRecipesProps): Promise<R
 	const { data } = await api.get('/recipes', {
 		params: {
 			search: search ? search : undefined,
-			tagIds
+			tagIds: tagIds?.toString()
 		}
 	});
 	return data;
