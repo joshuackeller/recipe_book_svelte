@@ -1,6 +1,6 @@
 <script>
 	import '../app.css';
-	import AuthWrapper from '../primary/components/auth/AuthWrapper.svelte';
+	import AuthWrapper from '../lib/components/auth/AuthWrapper.svelte';
 
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';

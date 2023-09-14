@@ -6,6 +6,8 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
+	const routesWithoutAuth = ['/'];
+
 	let isLoading: boolean = true;
 
 	onMount(() => {
@@ -21,9 +23,9 @@
 <div>
 	{#if isLoading}
 		<Loader />
+	{:else if routesWithoutAuth.includes($page.url.pathname) || (!!$token && $token !== 'undefined' && $token !== 'null' && $token !== null && $token !== undefined)}
+		<slot />
 	{:else if !$token}
 		<AuthFlow />
-	{:else if !!$token && $token !== 'undefined' && $token !== 'null' && $token !== null && $token !== undefined}
-		<slot />
 	{/if}
 </div>

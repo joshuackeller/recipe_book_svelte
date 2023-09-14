@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Loader from '../components/base/Loader.svelte';
-	import SquaresPlusIcon from '../components/icons/SquaresPlusIcon.svelte';
-	import { GetRecipes } from '../context/queries/recipes/useGetRecipes';
-	import TextInput from '../components/fields/TextInput.svelte';
-	import type { Recipe, Tag } from '../context/interfaces';
-	import { GetTags } from '../context/queries/tags/useGetTags';
+	import Loader from '../../components/base/Loader.svelte';
+	import SquaresPlusIcon from '../../components/icons/SquaresPlusIcon.svelte';
+	import { GetRecipes } from '../../context/queries/recipes/useGetRecipes';
+	import TextInput from '../../components/fields/TextInput.svelte';
+	import type { Recipe, Tag } from '../../context/interfaces';
+	import { GetTags } from '../../context/queries/tags/useGetTags';
 
 	let search: string = '';
 	let searchInput: string = '';

@@ -1,5 +1,5 @@
 <script>
-	import NewRecipe from '../../../primary/pages/recipes/NewRecipePage.svelte';
+	import NewRecipe from '../../../lib/pages/recipes/NewRecipePage.svelte';
 </script>
 
 <NewRecipe />
