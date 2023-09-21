@@ -9,6 +9,7 @@
 	export let onInput: ((e: any) => void) | undefined = undefined;
 	export let classes: string = '';
 	export let onKeyDown: ((e: any) => void) | undefined = undefined;
+	export let required: boolean = false;
 
 	const inputAttributes = { type };
 </script>
@@ -25,5 +26,6 @@
 		{placeholder}
 		class={clsx('w-full rounded-lg border-2 border-black p-1', classes)}
 		on:keydown={onKeyDown}
+		{required}
 	/>
 </div>
