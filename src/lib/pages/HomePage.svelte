@@ -32,7 +32,7 @@
 
 <div class="grid gap-5">
 	<h1 class="text-center text-5xl">
-		recipe book<span class="blinking-element">_</span>
+		recipio<span class="blinking-element">_</span>
 	</h1>
 	<div class="border-2 border-black p-5 rounded-xl">
 		<video src={video} autoplay muted loop class="aspect-[16/11] max-h-[600px] object-cover">
@@ -42,16 +42,18 @@
 	</div>
 	<div class="flex gap-5">
 		<div class="flex flex-1 items-center gap-x-5 p-5 border-2 border-black rounded-xl">
-			<DocumentTextIcon classes="h-16 w-16" />
+			<DocumentTextIcon classes="h-16 w-16 hidden md:block" />
 			<div>
 				<div class="text-2xl font-bold">Save your recipes</div>
 				<p>Store all your recipes in one place. Access them from anywhere</p>
 			</div>
 		</div>
 		<div class="flex flex-1 items-center gap-x-5 p-5 border-2 border-black rounded-xl">
-			<UserGroupIcon classes="h-16 w-16" />
+			<UserGroupIcon classes="h-16 w-16 hidden md:block" />
 			<div>
-				<div class="text-2xl font-bold">Share recipes</div>
+				<div class="fle mt-0">
+					<p class="text-2xl font-bold">Share recipes</p>
+				</div>
 				<p>Create groups and shares recipes with family and friends.</p>
 			</div>
 		</div>
