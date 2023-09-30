@@ -5,6 +5,7 @@
 	import TextInput from '../../components/fields/TextInput.svelte';
 	import type { Recipe, Tag } from '../../context/interfaces';
 	import { GetTags } from '../../context/queries/tags/useGetTags';
+	import UserGroupIcon from '$lib/components/icons/UserGroupIcon.svelte';
 
 	let search: string = '';
 	let searchInput: string = '';
@@ -60,7 +61,7 @@
 		name="search"
 		placeholder="Find a recipe..."
 	/>
-	<div class="flex items-center my-2">
+	<div class="flex flex-wrap items-center my-2">
 		{#each tags as tag, index}
 			<button
 				on:click={() => removeTag(index)}
@@ -100,4 +101,14 @@
 			{/each}
 		</div>
 	{/if}
+</div>
+<div class="fixed bottom-5 w-full max-w-4xl">
+	<div class="flex justify-end mr-10">
+		<a
+			href="/settings"
+			class="bg-white h-12 w-12 rounded-lg border-2 border-black flex justify-center items-center"
+		>
+			<UserGroupIcon classes="h-7 w-7" />
+		</a>
+	</div>
 </div>

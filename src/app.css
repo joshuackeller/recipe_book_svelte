@@ -9,10 +9,10 @@
 }
 
 h1 {
-	@apply text-4xl font-bold;
+	@apply text-4xl font-black;
 }
 h2 {
-	@apply text-3xl font-bold;
+	@apply text-3xl font-black;
 }
 h3 {
 	@apply text-xl font-bold;
