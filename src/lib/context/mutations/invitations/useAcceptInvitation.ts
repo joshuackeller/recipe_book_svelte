@@ -30,11 +30,8 @@ const useAcceptInvitation = () => {
 				return newData;
 			});
 			queryClient.setQueryData([GROUPS], (data: Group[] | undefined) => {
-				console.log(response, data);
 				const newData: Group[] = JSON.parse(JSON.stringify(data));
-				console.log(!!newData, !!response.group);
 				if (!!newData && !!response.group) {
-					console.log('made it to the right place', [response.group, ...newData]);
 					return [response.group, ...newData];
 				}
 				return newData;

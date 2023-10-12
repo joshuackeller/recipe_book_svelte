@@ -3,8 +3,8 @@ import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 import { KEY as GROUP_USERS } from '../../queries/groups/useGetGroupUsers';
 
 interface RemoveGroupUserProps {
-	groupId: number;
-	userId: number;
+	groupId: string;
+	userId: string;
 }
 
 const RemoveGroupUser = async ({ groupId, userId }: RemoveGroupUserProps) => {
@@ -14,20 +14,21 @@ const RemoveGroupUser = async ({ groupId, userId }: RemoveGroupUserProps) => {
 	return data;
 };
 
-const useRemoveGroupUser = (groupId: number, userId: number) => {
+const useRemoveGroupUser = (groupId: string, userId: string) => {
 	const queryClient = useQueryClient();
 	return createMutation(() => RemoveGroupUser({ groupId, userId }), {
 		onSuccess: () => {
-			queryClient.setQueryData([GROUP_USERS, groupId.toString()], (data: any[] | undefined) => {
-				const newData: any[] = JSON.parse(JSON.stringify(data));
-				if (!!newData && newData.length > 0) {
-					const index = newData?.findIndex((i) => userId === i.id);
-					if (index !== -1) {
-						newData.splice(index, 1);
-					}
-				}
-				return newData;
-			});
+			queryClient.invalidateQueries([GROUP_USERS, groupId]);
+			// queryClient.setQueryData([GROUP_USERS, groupId], (data: any[] | undefined) => {
+			// 	const newData: any[] = JSON.parse(JSON.stringify(data));
+			// 	if (!!newData && newData.length > 0) {
+			// 		const index = newData?.findIndex((i) => userId === i.id);
+			// 		if (index !== -1) {
+			// 			newData.splice(index, 1);
+			// 		}
+			// 	}
+			// 	return newData;
+			// });
 		}
 	});
 };

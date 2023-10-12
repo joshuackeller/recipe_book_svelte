@@ -6,12 +6,13 @@
 	import type { Recipe, Tag } from '../../context/interfaces';
 	import { GetTags } from '../../context/queries/tags/useGetTags';
 	import UserGroupIcon from '$lib/components/icons/UserGroupIcon.svelte';
+	import SettingsIcon from '$lib/components/icons/SettingsIcon.svelte';
 
 	let search: string = '';
 	let searchInput: string = '';
 	let tags: Tag[] = [];
 
-	let timer: number;
+	let timer: any;
 	const debounce = (e: any) => {
 		clearTimeout(timer);
 		timer = setTimeout(() => {
@@ -106,9 +107,9 @@
 	<div class="flex justify-end mr-10">
 		<a
 			href="/settings"
-			class="bg-white h-12 w-12 rounded-lg border-2 border-black flex justify-center items-center"
+			class="bg-white h-10 w-10 rounded-lg border-2 border-black flex justify-center items-center"
 		>
-			<UserGroupIcon classes="h-7 w-7" />
+			<SettingsIcon classes="h-6 w-6" />
 		</a>
 	</div>
 </div>

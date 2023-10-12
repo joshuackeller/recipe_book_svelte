@@ -14,6 +14,7 @@ export const KEY = 'GROUP_USERS';
 
 const useGetGroupUsers = (groupId?: string) => {
 	const tokenValue = get(token);
+
 	return createQuery<GroupUser[]>([KEY, groupId], () => GetGroupUsers(groupId), {
 		enabled: !!tokenValue && !!groupId
 	});

@@ -1,8 +1,10 @@
 import useRecipeApi from '../../useRecipeApi';
-import { createMutation } from '@tanstack/svelte-query';
+import { createMutation, useQueryClient } from '@tanstack/svelte-query';
+import { KEY as GROUP_INVITATIONS } from '$lib/context/queries/groups/useGetGroupInvitations';
+
 interface DeleteGroupInvitationProps {
-	groupId: number;
-	invitationId: number;
+	groupId: string;
+	invitationId: string;
 }
 
 const DeleteGroupInvitation = async ({ groupId, invitationId }: DeleteGroupInvitationProps) => {
@@ -11,8 +13,13 @@ const DeleteGroupInvitation = async ({ groupId, invitationId }: DeleteGroupInvit
 	return data;
 };
 
-const useDeleteGroupInvitation = () => {
-	return createMutation(DeleteGroupInvitation);
+const useDeleteGroupInvitation = (groupId: string) => {
+	const queryClient = useQueryClient();
+	return createMutation(DeleteGroupInvitation, {
+		onSuccess: () => {
+			queryClient.invalidateQueries([GROUP_INVITATIONS, groupId]);
+		}
+	});
 };
 
 export default useDeleteGroupInvitation;
