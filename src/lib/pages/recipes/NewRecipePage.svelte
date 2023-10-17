@@ -41,7 +41,7 @@
 	let search = '';
 	let searchTagsValue: string = '';
 	let searchTagResults: Tag[] = [];
-	let timer: number;
+	let timer: any;
 	const debounceTagSearch = (e: any) => {
 		clearTimeout(timer);
 		timer = setTimeout(() => {

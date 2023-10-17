@@ -8,6 +8,7 @@
 	import useDeleteInvitation from '$lib/context/mutations/invitations/useDeleteInvitation';
 	import useAcceptInvitation from '$lib/context/mutations/invitations/useAcceptInvitation';
 	import PendingInvitationsTable from './PendingInvitationsTable.svelte';
+	import PlusIcon from '$lib/components/icons/PlusIcon.svelte';
 
 	const groupsQuery = useGetGroups();
 	const invitations = useGetInvitations();
@@ -45,5 +46,15 @@
 				{/each}
 			</div>
 		{/if}
+	</div>
+	<div class="py-5 flex justify-end">
+		<a href="/groups/new">
+			<Button>
+				<div class="flex items-center gap-1">
+					Create Recipe
+					<PlusIcon classes="h-5 w-5" />
+				</div>
+			</Button>
+		</a>
 	</div>
 </div>
