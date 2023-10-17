@@ -2,9 +2,7 @@
 	import HomePage from '$lib/pages/HomePage.svelte';
 </script>
 
-<head>
-	<!-- Hotjar Tracking Code for https://recipio.joshkeller.info/ -->
-	<!-- Hotjar Tracking Code for https://recipio.joshkeller.info/ -->
+<svelte:head>
 	<script>
 		(function (h, o, t, j, a, r) {
 			h.hj =
@@ -20,6 +18,6 @@
 			a.appendChild(r);
 		})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 	</script>
-</head>
+</svelte:head>
 
 <HomePage />
