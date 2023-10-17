@@ -1,13 +1,23 @@
 <script lang="ts">
+	import clsx from '$lib/utilities/clsx';
 	import { Switch } from '@rgossiaux/svelte-headlessui';
 
-	let enabled: boolean = false;
+	export let value: boolean;
+	export let label: string | undefined = undefined;
 </script>
 
-<Switch bind:checked={enabled} class={enabled ? 'switch switch-enabled' : 'switch switch-disabled'}>
-	<span class="sr-only">Enable notifications</span>
-	<span class="toggle" class:toggle-on={enabled} class:toggle-off={!enabled} />
-</Switch>
+<div>
+	{#if !!label}
+		<p class="text-xs text-gray-600">{label}</p>
+	{/if}
+	<Switch
+		bind:checked={value}
+		class={clsx('transition', value ? 'switch bg-black ' : 'switch switch-disabled bg-gray-200')}
+	>
+		<span class="sr-only">Enable notifications</span>
+		<span class={clsx('toggle transition', value ? 'translate-x-[23px]' : 'translate-x-[3px]')} />
+	</Switch>
+</div>
 
 <style>
 	:global(.switch) {
@@ -17,16 +27,6 @@
 		border-radius: 9999px;
 		height: 1.5rem;
 		width: 2.75rem;
-	}
-
-	:global(.switch-enabled) {
-		/* Blue */
-		background-color: rgb(37 99 235);
-	}
-
-	:global(.switch-disabled) {
-		/* Gray */
-		background-color: rgb(229 231 235);
 	}
 
 	.sr-only {
@@ -43,17 +43,9 @@
 
 	.toggle {
 		display: inline-block;
-		width: 1rem;
-		height: 1rem;
+		width: 1.2rem;
+		height: 1.2rem;
 		background-color: rgb(255 255 255);
 		border-radius: 9999px;
-	}
-
-	.toggle-on {
-		transform: translateX(1.1rem);
-	}
-
-	.toggle-off {
-		transform: translateX(-0.25rem);
 	}
 </style>

@@ -4,6 +4,7 @@
 	import TextInput from '$lib/components/fields/TextInput.svelte';
 	import useCreateGroup from '$lib/context/mutations/groups/useCreateGroup';
 	import Toggle from '$lib/components/base/Toggle.svelte';
+	import { goto } from '$app/navigation';
 
 	let name: string = '';
 	let autoAddRecipes: boolean = true;
@@ -11,7 +12,14 @@
 	const createGroup = useCreateGroup();
 
 	const handleCreateGroup = async () => {
-		$createGroup.mutateAsync({ name, autoAddRecipes });
+		$createGroup.mutateAsync(
+			{ name, autoAddRecipes },
+			{
+				onSuccess: (group) => {
+					goto(`/groups/${group.id}`);
+				}
+			}
+		);
 	};
 </script>
 
@@ -25,8 +33,10 @@
 			placeholder="college friends, family, etc."
 			bind:value={name}
 		/>
-		<Toggle />
-		<div>
+
+		<Toggle bind:value={autoAddRecipes} label="Auto Add Recipes" />
+
+		<div class="flex justify-end">
 			<Button
 				text="Create Group"
 				type="submit"

@@ -51,7 +51,7 @@
 		<a href="/groups/new">
 			<Button>
 				<div class="flex items-center gap-1">
-					Create Recipe
+					Create Group
 					<PlusIcon classes="h-5 w-5" />
 				</div>
 			</Button>
