@@ -93,6 +93,9 @@
 			</form>
 		{/if}
 	</div>
+	<div>
+		<a href="/recipes" class="text-sm">Sign In</a>
+	</div>
 </div>
 
 <style>

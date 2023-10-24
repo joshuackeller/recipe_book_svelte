@@ -69,12 +69,12 @@
 					</div>
 					<Button isLoading={$signIn.isLoading} text="Sign In" type="submit" classes="w-full" />
 				</form>
-				<div class="flex justify-center">
+				<!-- <div class="flex justify-center">
 					<a
 						href={`${$page.url.pathname}?authFlow=create_account`}
 						class="pt-4 pb-1 text-center text-xs cursor-pointer">or Create Account</a
 					>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	{:else}
