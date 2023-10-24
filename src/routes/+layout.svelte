@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import AuthWrapper from '../lib/components/auth/AuthWrapper.svelte';
 
@@ -34,11 +34,23 @@
 	</script>
 </svelte:head>
 
-<QueryClientProvider client={queryClient}>
-	<div class="max-w-4xl mx-auto p-5">
-		<AuthWrapper>
-			<slot />
-		</AuthWrapper>
-	</div>
-	<SvelteQueryDevtools />
-</QueryClientProvider>
+<body>
+	<QueryClientProvider client={queryClient}>
+		<div class="max-w-4xl mx-auto p-5">
+			<AuthWrapper>
+				<slot />
+			</AuthWrapper>
+		</div>
+		<SvelteQueryDevtools />
+	</QueryClientProvider>
+	<script>
+		window._mfq = window._mfq || [];
+		(function () {
+			var mf = document.createElement('script');
+			mf.type = 'text/javascript';
+			mf.defer = true;
+			mf.src = '//cdn.mouseflow.com/projects/de544442-c327-4f27-81ae-67ff47630a23.js';
+			document.getElementsByTagName('head')[0].appendChild(mf);
+		})();
+	</script>
+</body>
