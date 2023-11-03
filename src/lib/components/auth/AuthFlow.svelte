@@ -2,23 +2,31 @@
 	import { page } from '$app/stores';
 	import useCreateAccount from '../../context/mutations/auth/useCreateAccount';
 	import useSignIn from '../../context/mutations/auth/useSignIn';
+	import useResendConfirmationEmail from '../../context/mutations/auth/useResendConfirmationEmail';
 	import { token } from '../../stores/token';
 	import Button from '../base/Button.svelte';
 	import TextInput from '../fields/TextInput.svelte';
 	import ErrorMessage from '../base/ErrorMessage.svelte';
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 
 	enum AuthFlow {
 		sign_in = 'sign_in',
-		create_account = 'create_account'
+		create_account = 'create_account',
+		resend = 'resend',
+		confirm_error = 'confirm_error',
+		confirm_success = 'confirm_success'
 	}
 
 	let authFlow: AuthFlow = AuthFlow.sign_in;
 	$: {
 		let authFlowParam = $page.url.searchParams.get('authFlow');
 		if (!!authFlowParam) {
-			if (authFlowParam === AuthFlow.create_account || authFlowParam === AuthFlow.sign_in) {
+			if (
+				authFlowParam === AuthFlow.create_account ||
+				authFlowParam === AuthFlow.sign_in ||
+				authFlowParam === AuthFlow.resend ||
+				authFlowParam === AuthFlow.confirm_error ||
+				authFlowParam === AuthFlow.confirm_success
+			) {
 				authFlow = authFlowParam;
 			}
 		}
@@ -44,16 +52,12 @@
 
 	const createAccount = useCreateAccount();
 	const handleCreateAccount = async () => {
-		await $createAccount.mutateAsync(
-			{ email, password, name },
-			{
-				onSuccess: (response) => {
-					if (!!response?.token) {
-						token.set(response.token);
-					}
-				}
-			}
-		);
+		await $createAccount.mutateAsync({ email, password, name });
+	};
+
+	const resendConfirmationEmail = useResendConfirmationEmail();
+	const handleResendEmail = async () => {
+		await $resendConfirmationEmail.mutateAsync({ email });
 	};
 </script>
 
@@ -69,15 +73,21 @@
 					</div>
 					<Button isLoading={$signIn.isLoading} text="Sign In" type="submit" classes="w-full" />
 				</form>
-				<!-- <div class="flex justify-center">
-					<a
+				<div class="flex justify-center">
+					<!-- <a
 						href={`${$page.url.pathname}?authFlow=create_account`}
-						class="pt-4 pb-1 text-center text-xs cursor-pointer">or Create Account</a
+						class="pt-4 pb-1 text-center text-xs cursor-pointer">or create an account</a
+					> -->
+					<a
+						href={`${$page.url.pathname}?authFlow=resend`}
+						class="pt-4 pb-1 text-center text-xs cursor-pointer"
+						>or <span class="underline"> resend the confirmation email</span></a
 					>
-				</div> -->
+				</div>
+				<ErrorMessage error={$signIn.error} />
 			</div>
 		</div>
-	{:else}
+	{:else if authFlow === AuthFlow.create_account}
 		<div class="flex justify-center py-20">
 			<div class="w-full max-w-sm">
 				<div class="p-5 border-2 border-black rounded-xl">
@@ -104,6 +114,63 @@
 					</div>
 				</div>
 				<ErrorMessage error={$createAccount.error} />
+			</div>
+		</div>
+	{:else if authFlow === AuthFlow.resend}
+		<div class="flex justify-center py-20">
+			<div class="p-5 w-full max-w-sm border-2 border-black rounded-xl">
+				<form class="space-y-2" on:submit|preventDefault={handleResendEmail}>
+					<h2 class="text-center mb-2">Resend Confirmation</h2>
+					<div>
+						<TextInput bind:value={email} name="email" type="email" label="Email" />
+					</div>
+					<Button
+						isLoading={$resendConfirmationEmail.isLoading}
+						isSuccess={$resendConfirmationEmail.isSuccess}
+						successText={'Email Sent'}
+						disabled={$resendConfirmationEmail.isLoading || $resendConfirmationEmail.isSuccess}
+						text="Resend Email"
+						type="submit"
+						classes="w-full"
+					/>
+				</form>
+				<div class="flex justify-center">
+					<a
+						href={`${$page.url.pathname}?authFlow=sign_in`}
+						class="pt-4 pb-1 text-center text-xs cursor-pointer"
+						>or <span class="underline">sign in</span></a
+					>
+				</div>
+				<ErrorMessage error={$resendConfirmationEmail.error} />
+			</div>
+		</div>
+	{:else if authFlow === AuthFlow.confirm_success}
+		<div class="flex justify-center py-20">
+			<div class="p-5 w-full max-w-sm border-2 border-black rounded-xl">
+				<h2 class="text-center mb-2">Email Confirmed Successfully</h2>
+
+				<div class="flex justify-center">
+					<a
+						href={`${$page.url.pathname}?authFlow=sign_in`}
+						class="px-8 py-2 bg-black rounded-lg text-white hover:bg-black/80 whitespace-nowrap"
+						>Go To Sign In</a
+					>
+				</div>
+				<ErrorMessage error={$resendConfirmationEmail.error} />
+			</div>
+		</div>{:else if authFlow === AuthFlow.confirm_error}
+		<div class="flex justify-center py-20">
+			<div class="p-5 w-full max-w-sm border-2 border-black rounded-xl">
+				<h2 class="text-center mb-2">Error: Could not confirm Email</h2>
+
+				<div class="flex justify-center">
+					<a
+						href={`${$page.url.pathname}?authFlow=resend`}
+						class="px-8 py-2 bg-black rounded-lg text-white hover:bg-black/80 whitespace-nowrap"
+						>Try Again</a
+					>
+				</div>
+				<ErrorMessage error={$resendConfirmationEmail.error} />
 			</div>
 		</div>
 	{/if}
