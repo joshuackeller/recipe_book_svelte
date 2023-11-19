@@ -1,14 +1,8 @@
 <script lang="ts">
 	import useGetInvitations from '$lib/context/queries/invitations/useGetInvitations';
-	import Button from '$lib/components/base/Button.svelte';
-	import useDeleteInvitation from '$lib/context/mutations/invitations/useDeleteInvitation';
-	import useAcceptInvitation from '$lib/context/mutations/invitations/useAcceptInvitation';
-	import PendingInvitationRow from './PendingInvitationRow.svelte';
+	import PendingInvitationRow from '$lib/components/custom/PendingInvitationRow.svelte';
 
 	const invitations = useGetInvitations();
-
-	const deleteInvitation = useDeleteInvitation();
-	const acceptInvitation = useAcceptInvitation();
 </script>
 
 {#if !!$invitations.data && $invitations?.data?.length > 0}

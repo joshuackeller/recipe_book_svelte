@@ -7,13 +7,16 @@
 	import Button from '../base/Button.svelte';
 	import TextInput from '../fields/TextInput.svelte';
 	import ErrorMessage from '../base/ErrorMessage.svelte';
+	import useResetPasswordRequest from '$lib/context/mutations/auth/useResetPasswordRequest';
 
 	enum AuthFlow {
 		sign_in = 'sign_in',
 		create_account = 'create_account',
 		resend = 'resend',
 		confirm_error = 'confirm_error',
-		confirm_success = 'confirm_success'
+		confirm_success = 'confirm_success',
+		reset_password_request = 'reset_password_request',
+		reset_password = 'reset_password'
 	}
 
 	let authFlow: AuthFlow = AuthFlow.sign_in;
@@ -59,6 +62,11 @@
 	const handleResendEmail = async () => {
 		await $resendConfirmationEmail.mutateAsync({ email });
 	};
+
+	const resetPasswordRequest = useResetPasswordRequest();
+	const handleResetPasswordRequest = async () => {
+		await $resetPasswordRequest.mutateAsync({ email });
+	};
 </script>
 
 <div>
@@ -73,16 +81,16 @@
 					</div>
 					<Button isLoading={$signIn.isLoading} text="Sign In" type="submit" classes="w-full" />
 				</form>
-				<div class="flex justify-center">
+				<div class="flex flex-col justify-center items-center gap-1 text-xs underline pt-3">
 					<!-- <a
 						href={`${$page.url.pathname}?authFlow=create_account`}
 						class="pt-4 pb-1 text-center text-xs cursor-pointer">or create an account</a
 					> -->
 					<a
-						href={`${$page.url.pathname}?authFlow=resend`}
-						class="pt-4 pb-1 text-center text-xs cursor-pointer"
-						>or <span class="underline"> resend the confirmation email</span></a
+						href={`${$page.url.pathname}?authFlow=${AuthFlow.resend}`}
+						class="text-center cursor-pointer">resend the confirmation email</a
 					>
+					<a href={`${$page.url.pathname}?authFlow=${AuthFlow.reset_password}`}>reset password</a>
 				</div>
 				<ErrorMessage error={$signIn.error} />
 			</div>
@@ -139,6 +147,33 @@
 						href={`${$page.url.pathname}?authFlow=sign_in`}
 						class="pt-4 pb-1 text-center text-xs cursor-pointer"
 						>or <span class="underline">sign in</span></a
+					>
+				</div>
+				<ErrorMessage error={$resendConfirmationEmail.error} />
+			</div>
+		</div>
+	{:else if authFlow === AuthFlow.reset_password_request}
+		<div class="flex justify-center py-20">
+			<div class="p-5 w-full max-w-sm border-2 border-black rounded-xl">
+				<form class="space-y-2" on:submit|preventDefault={handleResetPasswordRequest}>
+					<h2 class="text-center mb-2">Reset Password</h2>
+					<div>
+						<TextInput bind:value={email} name="email" type="email" label="Email" />
+					</div>
+					<Button
+						isLoading={$resetPasswordRequest.isLoading}
+						isSuccess={$resetPasswordRequest.isSuccess}
+						successText={'Email Sent'}
+						disabled={$resetPasswordRequest.isLoading || $resetPasswordRequest.isSuccess}
+						text="Send Link"
+						type="submit"
+						classes="w-full"
+					/>
+				</form>
+				<div class="flex justify-center">
+					<a
+						href={`${$page.url.pathname}?authFlow=${AuthFlow.sign_in}`}
+						class="pt-4 pb-1 text-center text-xs cursor-pointer underline">sign in</a
 					>
 				</div>
 				<ErrorMessage error={$resendConfirmationEmail.error} />
