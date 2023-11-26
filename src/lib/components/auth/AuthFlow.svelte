@@ -90,7 +90,8 @@
 						href={`${$page.url.pathname}?authFlow=${AuthFlow.resend}`}
 						class="text-center cursor-pointer">resend the confirmation email</a
 					>
-					<a href={`${$page.url.pathname}?authFlow=${AuthFlow.reset_password}`}>reset password</a>
+					<a href={`${$page.url.pathname}?authFlow=${AuthFlow.create_account}`}>reset password</a>
+					<!-- <a href={`${$page.url.pathname}?authFlow=${AuthFlow.reset_password}`}>reset password</a> -->
 				</div>
 				<ErrorMessage error={$signIn.error} />
 			</div>
