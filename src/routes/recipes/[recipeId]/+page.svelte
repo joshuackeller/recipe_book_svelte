@@ -127,7 +127,7 @@
 </script>
 
 <div class="space-y-3">
-	<BackButton />
+	<BackButton href="/recipes" />
 	{#if $recipeQuery.isLoading}
 		<Loader />
 	{:else if isEditing}
@@ -193,8 +193,8 @@
 			<Button
 				onClick={handleSaveRecipe}
 				text="Save"
-				isLoading={$updateRecipe.isLoading}
-				disabled={$updateRecipe.isLoading}
+				isLoading={$updateRecipe.isPending}
+				disabled={$updateRecipe.isPending}
 			/>
 		</div>
 	{:else}
@@ -230,8 +230,8 @@
 		<Button
 			classes="bg-yellow-500 hover:bg-yellow-500/80 w-full flex-1"
 			onClick={handleDelete}
-			isLoading={$deleteRecipe.isLoading}
-			disabled={$deleteRecipe.isLoading}>Delete</Button
+			isLoading={$deleteRecipe.isPending}
+			disabled={$deleteRecipe.isPending}>Delete</Button
 		>
 	</div>
 </Dialog>

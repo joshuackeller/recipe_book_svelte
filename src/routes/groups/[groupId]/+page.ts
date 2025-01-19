@@ -1,5 +1,5 @@
-export const load = ({ params }) => {
-	return {
-		groupId: params.groupId
-	};
+export const load = ({ params }: { params: { groupId: string } }) => {
+  return {
+    groupId: params.groupId,
+  };
 };

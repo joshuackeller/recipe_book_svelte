@@ -1,5 +1,5 @@
-export const load = ({ params }) => {
-	return {
-		recipeId: params.recipeId
-	};
+export const load = ({ params }: { params: { recipeId: string } }) => {
+  return {
+    recipeId: params.recipeId,
+  };
 };

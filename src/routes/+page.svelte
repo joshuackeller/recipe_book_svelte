@@ -94,8 +94,8 @@
 					text="Join Waitlist"
 					classes="w-full"
 					type="submit"
-					isLoading={$createWaitlistMember.isLoading}
-					disabled={$createWaitlistMember.isLoading}
+					isLoading={$createWaitlistMember.isPending}
+					disabled={$createWaitlistMember.isPending}
 				/>
 				<ErrorMessage error={$createWaitlistMember.error} />
 			</form>

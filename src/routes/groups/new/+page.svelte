@@ -29,7 +29,7 @@
 	<form class="space-y-3" on:submit|preventDefault={handleCreateGroup}>
 		<TextInput
 			name="groupName"
-			label="group name"
+			label="Group Name"
 			placeholder="college friends, family, etc."
 			bind:value={name}
 		/>
@@ -40,8 +40,8 @@
 			<Button
 				text="Create Group"
 				type="submit"
-				isLoading={$createGroup.isLoading}
-				disabled={$createGroup.isLoading}
+				isLoading={$createGroup.isPending}
+				disabled={$createGroup.isPending}
 			/>
 		</div>
 	</form>

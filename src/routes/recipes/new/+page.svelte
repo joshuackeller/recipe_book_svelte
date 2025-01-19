@@ -145,8 +145,8 @@
 	<div class="flex justify-end">
 		<Button
 			onClick={handleCreateRecipe}
-			isLoading={$createRecipe.isLoading}
-			disabled={$createRecipe.isLoading}
+			isLoading={$createRecipe.isPending}
+			disabled={$createRecipe.isPending}
 			text="Create Recipe"
 		/>
 	</div>

@@ -79,7 +79,7 @@
 						<TextInput bind:value={email} name="email" type="email" label="Email" />
 						<TextInput bind:value={password} type="password" name="password" label="Password" />
 					</div>
-					<Button isLoading={$signIn.isLoading} text="Sign In" type="submit" classes="w-full" />
+					<Button isLoading={$signIn.isPending} text="Sign In" type="submit" classes="w-full" />
 				</form>
 				<div class="flex flex-col justify-center items-center gap-1 text-xs underline pt-3">
 					<!-- <a
@@ -88,10 +88,8 @@
 					> -->
 					<a
 						href={`${$page.url.pathname}?authFlow=${AuthFlow.resend}`}
-						class="text-center cursor-pointer">resend the confirmation email</a
+						class="text-center cursor-pointer">Resend the Confirmation Email</a
 					>
-					<a href={`${$page.url.pathname}?authFlow=${AuthFlow.create_account}`}>reset password</a>
-					<!-- <a href={`${$page.url.pathname}?authFlow=${AuthFlow.reset_password}`}>reset password</a> -->
 				</div>
 				<ErrorMessage error={$signIn.error} />
 			</div>
@@ -108,7 +106,7 @@
 							<TextInput bind:value={password} type="password" name="password" label="Password" />
 						</div>
 						<Button
-							isLoading={$createAccount.isLoading}
+							isLoading={$createAccount.isPending}
 							text="Create Account"
 							type="submit"
 							classes="w-full"
@@ -134,10 +132,10 @@
 						<TextInput bind:value={email} name="email" type="email" label="Email" />
 					</div>
 					<Button
-						isLoading={$resendConfirmationEmail.isLoading}
+						isLoading={$resendConfirmationEmail.isPending}
 						isSuccess={$resendConfirmationEmail.isSuccess}
 						successText={'Email Sent'}
-						disabled={$resendConfirmationEmail.isLoading || $resendConfirmationEmail.isSuccess}
+						disabled={$resendConfirmationEmail.isPending || $resendConfirmationEmail.isSuccess}
 						text="Resend Email"
 						type="submit"
 						classes="w-full"
@@ -162,10 +160,10 @@
 						<TextInput bind:value={email} name="email" type="email" label="Email" />
 					</div>
 					<Button
-						isLoading={$resetPasswordRequest.isLoading}
+						isLoading={$resetPasswordRequest.isPending}
 						isSuccess={$resetPasswordRequest.isSuccess}
 						successText={'Email Sent'}
-						disabled={$resetPasswordRequest.isLoading || $resetPasswordRequest.isSuccess}
+						disabled={$resetPasswordRequest.isPending || $resetPasswordRequest.isSuccess}
 						text="Send Link"
 						type="submit"
 						classes="w-full"

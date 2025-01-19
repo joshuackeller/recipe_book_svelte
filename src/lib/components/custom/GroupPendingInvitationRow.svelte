@@ -45,8 +45,8 @@
 			<Button
 				classes="bg-yellow-500 hover:bg-yellow-500/80 w-full flex-1"
 				onClick={handleDeleteInvitation}
-				isLoading={$deleteInvitation.isLoading}
-				disabled={$deleteInvitation.isLoading}>Delete</Button
+				isLoading={$deleteInvitation.isPending}
+				disabled={$deleteInvitation.isPending}>Delete</Button
 			>
 		</div>
 	</Dialog>

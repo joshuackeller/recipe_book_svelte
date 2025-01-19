@@ -61,7 +61,7 @@
 		name="search"
 		placeholder="Find a recipe..."
 	/>
-	<div class="flex flex-wrap items-center my-2">
+	<div class="flex flex-wrap items-center my-2 gap-1">
 		{#each tags as tag, index}
 			<button
 				on:click={() => removeTag(index)}
@@ -73,7 +73,7 @@
 			{#each searchTags as searchTag}
 				<button
 					on:click={() => addTag(searchTag)}
-					class="bg-black text-white px-2 rounded mx-0.5 text-sm whitespace-nowrap"
+					class="bg-black text-white px-2 rounded text-sm whitespace-nowrap"
 					>{searchTag.name}</button
 				>
 			{/each}

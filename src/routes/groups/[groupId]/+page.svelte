@@ -61,8 +61,8 @@
 		<h2>{$groupQuery.data?.name}</h2>
 	</div>
 	<div class="grid grid-cols-2 border-b">
-		<div class="text-sm">group members</div>
-		<div class="text-sm text-right">status</div>
+		<div class="text-sm">Group Members</div>
+		<div class="text-sm text-right">Status</div>
 	</div>
 	{#if !!$groupUsersQuery.data && $groupUsersQuery.data.length > 0}
 		{#each $groupUsersQuery.data as groupUser (groupUser.id)}
@@ -94,7 +94,7 @@
 				<div>
 					<Button
 						onClick={() => (creatingInvitation = !creatingInvitation)}
-						disabled={$sendInvitation.isLoading}
+						disabled={$sendInvitation.isPending}
 						classes="bg-yellow-500 hover:bg-yellow-500/80"
 					>
 						<div class="flex items-center gap-1">Cancel</div>
@@ -103,8 +103,8 @@
 				<div>
 					<Button
 						type="submit"
-						disabled={$sendInvitation.isLoading}
-						isLoading={$sendInvitation.isLoading}
+						disabled={$sendInvitation.isPending}
+						isLoading={$sendInvitation.isPending}
 					>
 						<div class="flex items-center gap-1">
 							Send Invitation
@@ -138,8 +138,8 @@
 		<Button
 			classes="bg-yellow-500 hover:bg-yellow-500/80 w-full flex-1"
 			onClick={handleDeleteGroup}
-			isLoading={$deleteGroup.isLoading}
-			disabled={$deleteGroup.isLoading}>Delete</Button
+			isLoading={$deleteGroup.isPending}
+			disabled={$deleteGroup.isPending}>Delete</Button
 		>
 	</div>
 </Dialog>

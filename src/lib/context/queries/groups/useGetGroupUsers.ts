@@ -1,23 +1,25 @@
-import type { GroupUser } from '../../interfaces';
-import useRecipeApi from '../../useRecipeApi';
-import { createQuery } from '@tanstack/svelte-query';
-import { get } from 'svelte/store';
-import { token } from '../../../stores/token';
+import type { GroupUser } from "../../interfaces";
+import useRecipeApi from "../../useRecipeApi";
+import { createQuery } from "@tanstack/svelte-query";
+import { get } from "svelte/store";
+import { token } from "../../../stores/token";
 
 export const GetGroupUsers = async (groupId?: string) => {
-	const api = useRecipeApi();
-	const { data } = await api.get(`/groups/${groupId}/users`);
-	return data;
+  const api = useRecipeApi();
+  const { data } = await api.get(`/groups/${groupId}/users`);
+  return data;
 };
 
-export const KEY = 'GROUP_USERS';
+export const KEY = "GROUP_USERS";
 
 const useGetGroupUsers = (groupId?: string) => {
-	const tokenValue = get(token);
+  const tokenValue = get(token);
 
-	return createQuery<GroupUser[]>([KEY, groupId], () => GetGroupUsers(groupId), {
-		enabled: !!tokenValue && !!groupId
-	});
+  return createQuery<GroupUser[]>({
+    queryKey: [KEY, groupId],
+    queryFn: () => GetGroupUsers(groupId),
+    enabled: !!tokenValue && !!groupId,
+  });
 };
 
 export default useGetGroupUsers;

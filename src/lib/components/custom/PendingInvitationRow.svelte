@@ -20,8 +20,8 @@
 				onClick={() => {
 					$deleteInvitation.mutateAsync({ invitationId: invitation.id });
 				}}
-				isLoading={$deleteInvitation.isLoading}
-				disabled={$deleteInvitation.isLoading}
+				isLoading={$deleteInvitation.isPending}
+				disabled={$deleteInvitation.isPending}
 				classes="bg-yellow-500 hover:bg-yellow-500/80">decline</Button
 			>
 		</div>
@@ -30,8 +30,8 @@
 				onClick={() => {
 					$acceptInvitation.mutateAsync({ invitationId: invitation.id });
 				}}
-				isLoading={$acceptInvitation.isLoading}
-				disabled={$acceptInvitation.isLoading}>accept</Button
+				isLoading={$acceptInvitation.isPending}
+				disabled={$acceptInvitation.isPending}>accept</Button
 			>
 		</div>
 	</div>
