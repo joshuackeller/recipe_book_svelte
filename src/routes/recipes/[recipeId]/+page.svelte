@@ -14,6 +14,11 @@
 	import useAddRecipeTag from '$lib/context/mutations/recipes/useAddRecipeTag';
 	import useCreateTag from '$lib/context/mutations/tags/useCreateTag';
 	import useRemoveRecipeTag from '$lib/context/mutations/recipes/useRemoveRecipeTag';
+	import { token } from '$lib/stores/token.js';
+
+	const base64 = $token?.split('.')?.[1];
+	const json = JSON.parse(base64 ? atob(base64) : '{}');
+  const currentUserId = json?.userId ?? ""
 
 	export let data;
 	const { recipeId } = data;
@@ -164,7 +169,7 @@
 				{/each}
 
 				{#if searchTagResults.length > 0}
-					<div class="mr-1">
+					<div class="mr-1 whitespace-nowrap">
 						<p>Add tags</p>
 					</div>
 					{#each searchTagResults as tag}
@@ -213,7 +218,9 @@
 		{/if}
 		<div class="flex justify-between py-5 text-sm">
 			<button class="text-blue-500" on:click={() => (isEditing = true)}>Edit</button>
+      {#if currentUserId === $recipeQuery.data?.userId}
 			<button class="text-red-500" on:click={() => (isOpen = true)}>Delete</button>
+      {/if}
 		</div>
 		<div />
 	{/if}

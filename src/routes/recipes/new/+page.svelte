@@ -94,7 +94,7 @@
 			bind:value={search}
 			name="search"
 			placeholder="Search tags..."
-			classes="mb-2 md:mb-0"
+			classes="mb-2 md:mb-0 w-36"
 			onKeyDown={(e) => {
 				if (e.code === 'Enter') {
 					if (searchTagResults?.length > 0) {
@@ -118,7 +118,7 @@
 		</div>
 		<div class="flex items-center">
 			{#if searchTagResults.length > 0}
-				<div class="mr-1">
+				<div class="mr-1 whitespace-nowrap">
 					<p>Add tags</p>
 				</div>
 				{#each searchTagResults as tag}

@@ -33,7 +33,10 @@ export const GET = routeHandlerWithAuth(async ({ url, userId }) => {
         },
       ],
     },
-    take: 5,
+    take: 10,
+    orderBy: {
+      name: "asc",
+    },
   });
 });
 
