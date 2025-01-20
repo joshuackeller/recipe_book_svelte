@@ -1,6 +1,8 @@
 import { routeHandlerWithAuth } from "$lib/utilities/backend/handler";
+import nanoid from "$lib/utilities/backend/nanoid";
 import prisma from "$lib/utilities/backend/prismaClient";
 import { z } from "zod";
+import slugify from "slugify";
 
 export const GET = routeHandlerWithAuth(async ({ userId, url }) => {
   const search = z
@@ -9,7 +11,7 @@ export const GET = routeHandlerWithAuth(async ({ userId, url }) => {
     .optional()
     .parse(url.searchParams.get("search"));
   const tagIds = z
-    .array(z.string().transform((val) => parseInt(val)))
+    .array(z.string())
     .nullable()
     .optional()
     .parse((url.searchParams.get("tagIds") ?? "").split(","))
@@ -17,10 +19,7 @@ export const GET = routeHandlerWithAuth(async ({ userId, url }) => {
 
   return await prisma.recipe.findMany({
     where: {
-      OR: [
-        { userId: parseInt(userId) },
-        { groups: { some: { users: { some: { userId: parseInt(userId) } } } } },
-      ],
+      OR: [{ userId }, { groups: { some: { users: { some: { userId } } } } }],
       tags:
         !!tagIds && tagIds.length > 0
           ? { some: { id: { in: tagIds } } }
@@ -35,12 +34,12 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
     .object({
       name: z.string(),
       html: z.string(),
-      tags: z.array(z.object({ id: z.number().optional(), name: z.string() })),
+      tags: z.array(z.object({ id: z.string().optional(), name: z.string() })),
     })
     .parse(await request.json());
 
   const { groups } = await prisma.user.findUniqueOrThrow({
-    where: { id: parseInt(userId) },
+    where: { id: userId },
     select: {
       groups: {
         where: {
@@ -55,7 +54,8 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
 
   return await prisma.recipe.create({
     data: {
-      user: { connect: { id: parseInt(userId) } },
+      id: nanoid(),
+      user: { connect: { id: userId } },
       name,
       html,
       tags:
@@ -64,13 +64,15 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
               connectOrCreate: tags.map((tag: any) => ({
                 where: {
                   id_userId: {
-                    id: tag.id ?? -1,
-                    userId: parseInt(userId),
+                    id: tag.id ?? "",
+                    userId,
                   },
                 },
                 create: {
+                  id: nanoid(),
+                  slug: slugify(tag.name, { lower: true }),
                   name: tag.name,
-                  user: { connect: { id: parseInt(userId) } },
+                  user: { connect: { id: userId } },
                 },
               })),
             }

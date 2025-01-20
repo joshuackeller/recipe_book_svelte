@@ -12,8 +12,8 @@ export const GET = routeHandlerWithAuth(async ({ userId, params }) => {
   return await prisma.tag.findUniqueOrThrow({
     where: {
       id_userId: {
-        id: parseInt(tagId),
-        userId: parseInt(userId),
+        id: tagId,
+        userId,
       },
     },
   });
@@ -34,8 +34,8 @@ export const PUT = routeHandlerWithAuth(async ({ userId, params, request }) => {
   return await prisma.tag.update({
     where: {
       id_userId: {
-        id: parseInt(tagId),
-        userId: parseInt(userId),
+        id: tagId,
+        userId,
       },
     },
     data: {
@@ -54,8 +54,8 @@ export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
   return await prisma.tag.delete({
     where: {
       id_userId: {
-        id: parseInt(tagId),
-        userId: parseInt(userId),
+        id: tagId,
+        userId,
       },
     },
   });

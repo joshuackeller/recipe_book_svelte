@@ -4,7 +4,7 @@ import prisma from "$lib/utilities/backend/prismaClient";
 export const GET = routeHandlerWithAuth(async ({ userId }) => {
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      id: parseInt(userId),
+      id: userId,
     },
   });
 

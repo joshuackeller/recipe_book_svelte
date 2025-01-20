@@ -11,12 +11,12 @@ export const GET = routeHandlerWithAuth(async ({ userId, params }) => {
 
   return await prisma.recipe.findUniqueOrThrow({
     where: {
-      id: parseInt(recipeId),
+      id: recipeId,
       OR: [
-        { userId: parseInt(userId) },
+        { userId },
         {
           groups: {
-            some: { users: { some: { userId: parseInt(userId) } } },
+            some: { users: { some: { userId } } },
           },
         },
       ],
@@ -48,12 +48,12 @@ export const PUT = routeHandlerWithAuth(async ({ userId, params, request }) => {
 
   return await prisma.recipe.update({
     where: {
-      id: parseInt(recipeId),
+      id: recipeId,
       OR: [
-        { userId: parseInt(userId) },
+        { userId },
         {
           groups: {
-            some: { users: { some: { userId: parseInt(userId) } } },
+            some: { users: { some: { userId } } },
           },
         },
       ],
@@ -75,8 +75,8 @@ export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
   return await prisma.recipe.delete({
     where: {
       id_userId: {
-        userId: parseInt(userId),
-        id: parseInt(recipeId),
+        userId,
+        id: recipeId,
       },
     },
   });

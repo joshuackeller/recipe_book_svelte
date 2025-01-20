@@ -1,4 +1,5 @@
 import { routeHandler } from "$lib/utilities/backend/handler";
+import nanoid from "$lib/utilities/backend/nanoid";
 import prisma from "$lib/utilities/backend/prismaClient";
 import { z } from "zod";
 
@@ -12,6 +13,7 @@ export const POST = routeHandler(async ({ request }) => {
 
   return await prisma.waitlistMember.create({
     data: {
+      id: nanoid(),
       name,
       email,
     },

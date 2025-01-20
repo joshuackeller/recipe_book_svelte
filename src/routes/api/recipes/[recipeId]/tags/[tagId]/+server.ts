@@ -13,16 +13,16 @@ export const POST = routeHandlerWithAuth(async ({ userId, params }) => {
   return await prisma.tag.update({
     where: {
       id_userId: {
-        id: parseInt(tagId),
-        userId: parseInt(userId),
+        id: tagId,
+        userId: userId,
       },
     },
     data: {
       recipes: {
         connect: {
           id_userId: {
-            id: parseInt(recipeId),
-            userId: parseInt(userId),
+            id: recipeId,
+            userId,
           },
         },
       },
@@ -41,16 +41,16 @@ export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
   const tag = await prisma.tag.update({
     where: {
       id_userId: {
-        id: parseInt(tagId),
-        userId: parseInt(userId),
+        id: tagId,
+        userId,
       },
     },
     data: {
       recipes: {
         disconnect: {
           id_userId: {
-            id: parseInt(recipeId),
-            userId: parseInt(userId),
+            id: recipeId,
+            userId,
           },
         },
       },
@@ -68,8 +68,8 @@ export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
     await prisma.tag.delete({
       where: {
         id_userId: {
-          id: parseInt(tagId),
-          userId: parseInt(userId),
+          id: tagId,
+          userId,
         },
       },
     });

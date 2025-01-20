@@ -20,7 +20,7 @@ export const GET = routeHandler(async ({ request }) => {
 
     await prisma.user.update({
       where: {
-        id: parseInt(userId),
+        id: userId,
       },
       data: {
         confirmed: true,

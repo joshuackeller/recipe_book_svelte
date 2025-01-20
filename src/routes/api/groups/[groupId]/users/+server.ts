@@ -13,11 +13,11 @@ export const GET = routeHandlerWithAuth(async ({ userId, params }) => {
     where: {
       groups: {
         some: {
-          groupId: parseInt(groupId),
+          groupId,
           group: {
             users: {
               some: {
-                userId: parseInt(userId),
+                userId,
               },
             },
           },

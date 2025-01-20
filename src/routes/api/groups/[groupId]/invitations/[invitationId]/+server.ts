@@ -12,12 +12,12 @@ export const GET = routeHandlerWithAuth(async ({ userId, params }) => {
 
   return await prisma.groupInvite.findUniqueOrThrow({
     where: {
-      id: parseInt(invitationId),
+      id: invitationId,
       group: {
-        id: parseInt(groupId),
+        id: groupId,
         users: {
           some: {
-            userId: parseInt(userId),
+            userId,
           },
         },
       },
@@ -35,12 +35,12 @@ export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
 
   return await prisma.groupInvite.delete({
     where: {
-      id: parseInt(invitationId),
+      id: invitationId,
       group: {
-        id: parseInt(groupId),
+        id: groupId,
         users: {
           some: {
-            userId: parseInt(userId),
+            userId,
           },
         },
       },

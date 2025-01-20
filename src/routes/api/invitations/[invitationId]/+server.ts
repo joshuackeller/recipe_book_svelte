@@ -11,13 +11,13 @@ export const POST = routeHandlerWithAuth(async ({ userId, params }) => {
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      id: parseInt(userId),
+      id: userId,
     },
   });
 
   const invitation = await prisma.groupInvite.findUniqueOrThrow({
     where: {
-      id: parseInt(invitationId),
+      id: invitationId,
       email: user.email,
     },
     include: {
@@ -32,7 +32,7 @@ export const POST = routeHandlerWithAuth(async ({ userId, params }) => {
     data: {
       users: {
         create: {
-          userId: parseInt(userId),
+          userId,
         },
       },
       invitations: {
@@ -58,13 +58,13 @@ export const DELETE = routeHandlerWithAuth(async ({ params, userId }) => {
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      id: parseInt(userId),
+      id: userId,
     },
   });
 
   const invitation = await prisma.groupInvite.findUniqueOrThrow({
     where: {
-      id: parseInt(invitationId),
+      id: invitationId,
       email: user.email,
     },
     include: {

@@ -1,8 +1,10 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
+    "phone" TEXT,
+    "confirmed" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -10,9 +12,18 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Password" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "hash" TEXT NOT NULL,
+
+    CONSTRAINT "Password_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "UserGroup" (
-    "userId" INTEGER NOT NULL,
-    "groupId" INTEGER NOT NULL,
+    "groupId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "autoAddRecipes" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -22,7 +33,7 @@ CREATE TABLE "UserGroup" (
 
 -- CreateTable
 CREATE TABLE "Group" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -32,9 +43,10 @@ CREATE TABLE "Group" (
 
 -- CreateTable
 CREATE TABLE "GroupInvite" (
-    "id" SERIAL NOT NULL,
-    "phone" TEXT NOT NULL,
-    "groupId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "groupId" TEXT NOT NULL,
 
     CONSTRAINT "GroupInvite_pkey" PRIMARY KEY ("id")
 );
@@ -43,7 +55,7 @@ CREATE TABLE "GroupInvite" (
 CREATE TABLE "AccessCode" (
     "code" INTEGER NOT NULL,
     "attempts" INTEGER NOT NULL DEFAULT 0,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "AccessCode_pkey" PRIMARY KEY ("code")
@@ -51,10 +63,10 @@ CREATE TABLE "AccessCode" (
 
 -- CreateTable
 CREATE TABLE "Recipe" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "html" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -63,30 +75,52 @@ CREATE TABLE "Recipe" (
 
 -- CreateTable
 CREATE TABLE "Tag" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "slug" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
+CREATE TABLE "WaitlistMember" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "WaitlistMember_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_GroupToRecipe" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL,
+
+    CONSTRAINT "_GroupToRecipe_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
 CREATE TABLE "_RecipeToTag" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL,
+
+    CONSTRAINT "_RecipeToTag_AB_pkey" PRIMARY KEY ("A","B")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "GroupInvite_phone_groupId_key" ON "GroupInvite"("phone", "groupId");
+CREATE UNIQUE INDEX "Password_userId_key" ON "Password"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "GroupInvite_email_groupId_key" ON "GroupInvite"("email", "groupId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "AccessCode_userId_key" ON "AccessCode"("userId");
@@ -98,22 +132,25 @@ CREATE UNIQUE INDEX "Recipe_id_userId_key" ON "Recipe"("id", "userId");
 CREATE UNIQUE INDEX "Tag_id_userId_key" ON "Tag"("id", "userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_GroupToRecipe_AB_unique" ON "_GroupToRecipe"("A", "B");
+CREATE UNIQUE INDEX "Tag_userId_slug_key" ON "Tag"("userId", "slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "WaitlistMember_email_key" ON "WaitlistMember"("email");
 
 -- CreateIndex
 CREATE INDEX "_GroupToRecipe_B_index" ON "_GroupToRecipe"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_RecipeToTag_AB_unique" ON "_RecipeToTag"("A", "B");
-
--- CreateIndex
 CREATE INDEX "_RecipeToTag_B_index" ON "_RecipeToTag"("B");
 
 -- AddForeignKey
-ALTER TABLE "UserGroup" ADD CONSTRAINT "UserGroup_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Password" ADD CONSTRAINT "Password_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserGroup" ADD CONSTRAINT "UserGroup_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserGroup" ADD CONSTRAINT "UserGroup_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserGroup" ADD CONSTRAINT "UserGroup_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "GroupInvite" ADD CONSTRAINT "GroupInvite_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

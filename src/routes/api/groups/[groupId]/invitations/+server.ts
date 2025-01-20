@@ -1,4 +1,5 @@
 import { routeHandlerWithAuth } from "$lib/utilities/backend/handler";
+import nanoid from "$lib/utilities/backend/nanoid";
 import prisma from "$lib/utilities/backend/prismaClient";
 import { z } from "zod";
 
@@ -11,11 +12,11 @@ export const GET = routeHandlerWithAuth(async ({ userId, params }) => {
 
   return await prisma.groupInvite.findMany({
     where: {
-      groupId: parseInt(groupId),
+      groupId,
       group: {
         users: {
           some: {
-            userId: parseInt(userId),
+            userId,
           },
         },
       },
@@ -44,10 +45,10 @@ export const POST = routeHandlerWithAuth(
     // validate user is in group
     await prisma.group.findUniqueOrThrow({
       where: {
-        id: parseInt(groupId),
+        id: groupId,
         users: {
           some: {
-            userId: parseInt(userId),
+            userId,
           },
         },
       },
@@ -55,9 +56,10 @@ export const POST = routeHandlerWithAuth(
 
     return await prisma.groupInvite.create({
       data: {
+        id: nanoid(),
         name,
         email,
-        groupId: parseInt(groupId),
+        groupId,
       },
     });
   }

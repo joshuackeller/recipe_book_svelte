@@ -1,5 +1,7 @@
 import { routeHandlerWithAuth } from "$lib/utilities/backend/handler";
+import nanoid from "$lib/utilities/backend/nanoid";
 import prisma from "$lib/utilities/backend/prismaClient";
+import slugify from "slugify";
 import { z } from "zod";
 
 export const GET = routeHandlerWithAuth(async ({ url, userId }) => {
@@ -13,7 +15,7 @@ export const GET = routeHandlerWithAuth(async ({ url, userId }) => {
     where: {
       name: !!search ? { contains: search, mode: "insensitive" } : undefined,
       OR: [
-        { userId: parseInt(userId) },
+        { userId },
         {
           recipes: {
             some: {
@@ -21,7 +23,7 @@ export const GET = routeHandlerWithAuth(async ({ url, userId }) => {
                 some: {
                   users: {
                     some: {
-                      userId: parseInt(userId),
+                      userId,
                     },
                   },
                 },
@@ -45,14 +47,16 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
 
   return await prisma.tag.create({
     data: {
+      id: nanoid(),
       name,
-      userId: parseInt(userId),
+      slug: slugify(name, { lower: true }),
+      userId,
       recipes: recipeId
         ? {
             connect: {
               id_userId: {
-                id: parseInt(recipeId),
-                userId: parseInt(userId),
+                id: recipeId,
+                userId,
               },
             },
           }

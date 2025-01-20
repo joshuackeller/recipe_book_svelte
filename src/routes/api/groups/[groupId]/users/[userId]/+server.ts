@@ -13,11 +13,11 @@ export const GET = routeHandlerWithAuth(
 
     return await prisma.user.findUniqueOrThrow({
       where: {
-        id: parseInt(userId),
+        id: userId,
         groups: {
           some: {
-            groupId: parseInt(groupId),
-            userId: parseInt(authUserId),
+            groupId,
+            userId: authUserId,
           },
         },
       },
@@ -37,13 +37,13 @@ export const DELETE = routeHandlerWithAuth(
     return await prisma.userGroup.delete({
       where: {
         userId_groupId: {
-          userId: parseInt(userId),
-          groupId: parseInt(groupId),
+          userId,
+          groupId,
         },
         group: {
           users: {
             some: {
-              userId: parseInt(authUserId),
+              userId: authUserId,
             },
           },
         },

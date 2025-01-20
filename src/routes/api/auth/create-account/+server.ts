@@ -8,6 +8,7 @@ import SpecialToken, {
   SpecialTokenType,
 } from "$lib/utilities/backend/SpecialToken";
 import { Resend } from "resend";
+import nanoid from "$lib/utilities/backend/nanoid";
 
 const resend = new Resend(process.env.RESEND_KEY);
 
@@ -33,11 +34,13 @@ export const POST = routeHandler(async ({ request }) => {
 
     user = await prisma.user.create({
       data: {
+        id: nanoid(),
         email,
         name,
         confirmed: false,
         password: {
           create: {
+            id: nanoid(),
             hash,
           },
         },
