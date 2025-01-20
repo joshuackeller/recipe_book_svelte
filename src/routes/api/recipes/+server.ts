@@ -34,7 +34,7 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
     .object({
       name: z.string(),
       html: z.string(),
-      tags: z.array(z.object({ id: z.string().optional(), name: z.string() })),
+      tags: z.array(z.object({ name: z.string() })),
     })
     .parse(await request.json());
 
@@ -63,9 +63,9 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
           ? {
               connectOrCreate: tags.map((tag: any) => ({
                 where: {
-                  id_userId: {
-                    id: tag.id ?? "",
+                  userId_slug: {
                     userId,
+                    slug: slugify(tag.name, { lower: true }),
                   },
                 },
                 create: {

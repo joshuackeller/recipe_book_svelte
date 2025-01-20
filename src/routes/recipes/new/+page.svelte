@@ -7,9 +7,10 @@
 	import type { Recipe, Tag } from '$lib/context/interfaces';
 	import useCreateRecipe from '$lib/context/mutations/recipes/useCreateRecipe';
 	import { GetTags } from '$lib/context/queries/tags/useGetTags';
+	import slugify from 'slugify';
 
 	let name: string = '';
-	let tags: { id?: number; name: string }[] = [];
+	let tags: { name: string }[] = [];
 	let html: string = `
     <h3>Ingredients</h3>
     <ul>
@@ -44,20 +45,20 @@
 		}, 200);
 	};
 	$: {
-		GetTags({ search: searchTagsValue }).then((response) => {
-			let preFilterSearchTags = response;
-			const newSearchTags = preFilterSearchTags.filter((searchTag: any) => {
-				if (!!tags && tags.length > 0) {
-					const index = tags.findIndex(
-						(tag) => tag.name === searchTag.name || tag.id === searchTag.id
-					);
-					if (index === -1) return true;
-					else return false;
-				} else {
-					return true;
-				}
-			});
-			searchTagResults = newSearchTags;
+		GetTags({ search: searchTagsValue }).then((response: Tag[]) => {
+			// let preFilterSearchTags = response;
+			// const newSearchTags = preFilterSearchTags.filter((searchTag: any) => {
+			// 	if (!!tags && tags.length > 0) {
+			// 		const index = tags.findIndex(
+			// 			(tag) => tag.name === searchTag.name || tag.id === searchTag.id
+			// 		);
+			// 		if (index === -1) return true;
+			// 		else return false;
+			// 	} else {
+			// 		return true;
+			// 	}
+			// });
+			searchTagResults = response.filter((t) => !tags.some((tag) => slugify(tag.name, {lower: true}) === slugify(t.name, {lower: true})))
 		});
 	}
 
