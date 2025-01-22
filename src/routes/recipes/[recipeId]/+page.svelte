@@ -142,13 +142,24 @@
 			classes="p-2 text-2xl font-bold placeholder:text-2xl placeholder:font-bold"
 		/>
 		<TipTapEditor bind:value={html} />
+    <div class="flex flex-wrap items-center">
+      {#each tags as tag, index}
+      <button
+        on:click={() => removeTag(tag.id, index)}
+        class="bg-black text-white px-2 rounded mx-1 text-sm whitespace-nowrap"
+      >
+        {tag.name}
+      </button>
+      {/each}
+    </div>
 		<div class="md:flex gap-2 items-center">
+      <div class="flex-1 min-w-36">
 			<TextInput
 				onInput={debounceTagSearch}
 				bind:value={search}
 				name="search"
 				placeholder="Search tags..."
-				classes="mb-2 md:mb-0"
+				classes="mb-2 md:mb-0 min-w-24"
 				onKeyDown={(e) => {
 					if (e.code === 'Enter') {
 						if (searchTagResults?.length > 0) {
@@ -159,14 +170,8 @@
 					}
 				}}
 			/>
-			<div class="flex items-center">
-				{#each tags as tag, index}
-					<button
-						on:click={() => removeTag(tag.id, index)}
-						class="bg-black text-white px-2 rounded mx-1 text-sm whitespace-nowrap"
-						>{tag.name}</button
-					>
-				{/each}
+      </div>
+			<div class="flex flex-wrap items-center">
 
 				{#if searchTagResults.length > 0}
 					<div class="mr-1 whitespace-nowrap">

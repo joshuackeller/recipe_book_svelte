@@ -12,7 +12,7 @@ import nanoid from "$lib/utilities/backend/nanoid";
 
 const resend = new Resend(process.env.RESEND_KEY);
 
-const SALT_ROUNDS = 12;
+const SALT_ROUNDS = 14;
 
 export const POST = routeHandler(async ({ request }) => {
   const { email, name, password } = z

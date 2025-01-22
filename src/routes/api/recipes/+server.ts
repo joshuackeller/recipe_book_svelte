@@ -63,10 +63,7 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
           ? {
               connectOrCreate: tags.map((tag: any) => ({
                 where: {
-                  userId_slug: {
-                    userId,
-                    slug: slugify(tag.name, { lower: true }),
-                  },
+                  slug: slugify(tag.name, { lower: true }),
                 },
                 create: {
                   id: nanoid(),
@@ -87,12 +84,4 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
           : undefined,
     },
   });
-});
-
-export const PUT = routeHandlerWithAuth(async () => {
-  return { test: "cool - put" };
-});
-
-export const DELETE = routeHandlerWithAuth(async () => {
-  return { test: "cool - delete" };
 });

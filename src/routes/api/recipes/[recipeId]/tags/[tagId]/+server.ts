@@ -10,20 +10,22 @@ export const POST = routeHandlerWithAuth(async ({ userId, params }) => {
     })
     .parse(params);
 
-  return await prisma.tag.update({
+  return await prisma.recipe.update({
     where: {
-      id_userId: {
-        id: tagId,
-        userId: userId,
-      },
+      id: recipeId,
+      OR: [
+        { userId },
+        {
+          groups: {
+            some: { users: { some: { userId } } },
+          },
+        },
+      ],
     },
     data: {
-      recipes: {
+      tags: {
         connect: {
-          id_userId: {
-            id: recipeId,
-            userId,
-          },
+          id: tagId,
         },
       },
     },
@@ -38,42 +40,24 @@ export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
     })
     .parse(params);
 
-  const tag = await prisma.tag.update({
+  return await prisma.recipe.update({
     where: {
-      id_userId: {
-        id: tagId,
-        userId,
-      },
-    },
-    data: {
-      recipes: {
-        disconnect: {
-          id_userId: {
-            id: recipeId,
-            userId,
+      id: recipeId,
+      OR: [
+        { userId },
+        {
+          groups: {
+            some: { users: { some: { userId } } },
           },
         },
-      },
+      ],
     },
-    include: {
-      _count: {
-        select: {
-          recipes: true,
+    data: {
+      tags: {
+        disconnect: {
+          id: tagId,
         },
       },
     },
   });
-
-  if (tag._count.recipes < 1) {
-    await prisma.tag.delete({
-      where: {
-        id_userId: {
-          id: tagId,
-          userId,
-        },
-      },
-    });
-  }
-
-  return tag;
 });

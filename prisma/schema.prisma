@@ -16,7 +16,6 @@ model User {
   phone      String?     @unique
   accessCode AccessCode?
   recipes    Recipe[]
-  tags       Tag[]
   groups     UserGroup[]
   confirmed  Boolean     @default(false)
 
@@ -92,13 +91,8 @@ model Recipe {
 model Tag {
   id      String   @id
   name    String
-  slug    String
-  userId  String
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug    String   @unique
   recipes Recipe[] @relation("RecipeToTag")
-
-  @@unique([id, userId])
-  @@unique([userId, slug])
 }
 
 model WaitlistMember {

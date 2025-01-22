@@ -15,7 +15,13 @@ export const GET = routeHandlerWithAuth(async ({ url, userId }) => {
     where: {
       name: !!search ? { contains: search, mode: "insensitive" } : undefined,
       OR: [
-        { userId },
+        {
+          recipes: {
+            some: {
+              userId,
+            },
+          },
+        },
         {
           recipes: {
             some: {
@@ -53,7 +59,6 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
       id: nanoid(),
       name,
       slug: slugify(name, { lower: true }),
-      userId,
       recipes: recipeId
         ? {
             connect: {

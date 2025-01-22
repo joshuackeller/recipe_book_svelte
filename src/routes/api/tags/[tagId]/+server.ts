@@ -2,7 +2,7 @@ import { routeHandlerWithAuth } from "$lib/utilities/backend/handler";
 import prisma from "$lib/utilities/backend/prismaClient";
 import { z } from "zod";
 
-export const GET = routeHandlerWithAuth(async ({ userId, params }) => {
+export const GET = routeHandlerWithAuth(async ({ params }) => {
   const { tagId } = z
     .object({
       tagId: z.string(),
@@ -11,15 +11,12 @@ export const GET = routeHandlerWithAuth(async ({ userId, params }) => {
 
   return await prisma.tag.findUniqueOrThrow({
     where: {
-      id_userId: {
-        id: tagId,
-        userId,
-      },
+      id: tagId,
     },
   });
 });
 
-export const PUT = routeHandlerWithAuth(async ({ userId, params, request }) => {
+export const PUT = routeHandlerWithAuth(async ({ params, request }) => {
   const { tagId } = z
     .object({
       tagId: z.string(),
@@ -33,10 +30,7 @@ export const PUT = routeHandlerWithAuth(async ({ userId, params, request }) => {
 
   return await prisma.tag.update({
     where: {
-      id_userId: {
-        id: tagId,
-        userId,
-      },
+      id: tagId,
     },
     data: {
       name,
@@ -44,7 +38,7 @@ export const PUT = routeHandlerWithAuth(async ({ userId, params, request }) => {
   });
 });
 
-export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
+export const DELETE = routeHandlerWithAuth(async ({ params }) => {
   const { tagId } = z
     .object({
       tagId: z.string(),
@@ -53,10 +47,7 @@ export const DELETE = routeHandlerWithAuth(async ({ userId, params }) => {
 
   return await prisma.tag.delete({
     where: {
-      id_userId: {
-        id: tagId,
-        userId,
-      },
+      id: tagId,
     },
   });
 });
