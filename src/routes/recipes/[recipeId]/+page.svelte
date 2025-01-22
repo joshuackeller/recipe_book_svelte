@@ -153,13 +153,13 @@
       {/each}
     </div>
 		<div class="md:flex gap-2 items-center">
-      <div class="flex-1 min-w-36">
+      <div class="w-36 md:w-fit">
 			<TextInput
 				onInput={debounceTagSearch}
 				bind:value={search}
 				name="search"
 				placeholder="Search tags..."
-				classes="mb-2 md:mb-0 min-w-24"
+				classes="mb-2 md:mb-0"
 				onKeyDown={(e) => {
 					if (e.code === 'Enter') {
 						if (searchTagResults?.length > 0) {
