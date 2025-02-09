@@ -69,7 +69,6 @@ export const POST = routeHandlerWithAuth(async ({ userId, request }) => {
                   id: nanoid(),
                   slug: slugify(tag.name, { lower: true }),
                   name: tag.name,
-                  user: { connect: { id: userId } },
                 },
               })),
             }
